@@ -1,12 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flights</title>
-</head>
-<body>
-    <h1>Flight list goes here!</h1>
-</body>
-</html>
+<%- include('../../partials/header') %>
+
+    <% if (flights.length) { %>
+    <table>
+        <thead>
+            <tr>
+                <th>Airline</th>
+                <th>Airport</th>
+                <th>Flight Number</th>
+                <th>Departure Date</th>
+                <th>Departure Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% flights.forEach(flight => { %>
+                <tr>
+                    <td><%= flight.airline %></td>
+                    <td><%= flight.airport %></td>
+                    <td><%= flight.flightNo %></td>
+                    <td><%= flight.departs %></td>
+                    <td><%= flight.departs %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <% } else { %>
+        <h3>No flights to show right now</h3>
+    <% } %>
+    <a href="/flights/new">Add a New Flight</a>
+
+<%- include('../../partials/footer') %>

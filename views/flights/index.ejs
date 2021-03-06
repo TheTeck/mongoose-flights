@@ -7,8 +7,7 @@
                 <th>Airline</th>
                 <th>Airport</th>
                 <th>Flight Number</th>
-                <th>Departure Date</th>
-                <th>Departure Time</th>
+                <th>Departure</th>
             </tr>
         </thead>
         <tbody>
@@ -17,8 +16,7 @@
                     <td><%= flight.airline %></td>
                     <td><%= flight.airport %></td>
                     <td><%= flight.flightNo %></td>
-                    <td><%= flight.departs %></td>
-                    <td><%= flight.departs %></td>
+                    <td><%= flight.departs.toISOString().slice(0, 16) %></td>
                 </tr>
             <% }) %>
         </tbody>

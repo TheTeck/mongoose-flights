@@ -3,7 +3,8 @@ const { render } = require('../server');
 
 module.exports = {
     index,
-    new: newFlight
+    new: newFlight,
+    create
 }
 
 function index (req, res) {
@@ -14,4 +15,15 @@ function index (req, res) {
 
 function newFlight (req, res) {
     res.render('flights/new', {title: 'New Flight'})
+}
+
+function create (req, res) {
+    const flight = new Flight(req.body)
+    const dt = flight.departs
+    const departsDate = dt.toISOString().slice(0, 16);
+
+    flight.save(function(err) {
+        if (err) return res.redirect('/flights/new')
+        res.redirect('/flights')
+    })
 }

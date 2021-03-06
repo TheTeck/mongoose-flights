@@ -12,7 +12,8 @@ function index (req, res) {
         flights.sort(function (a, b) {
             return +a.departs - +b.departs
         })
-        res.render('flights/index', {flights, title: 'All Flights'})
+        let today = new Date()
+        res.render('flights/index', {flights, title: 'All Flights', today})
     })
 }
 

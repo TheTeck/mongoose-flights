@@ -80,3 +80,7 @@ table {
 #home {
   margin: 0 auto 0 0;
 }
+
+.passed {
+  color: red;
+}

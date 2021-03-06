@@ -16,7 +16,7 @@
                     <td><%= flight.airline %></td>
                     <td><%= flight.airport %></td>
                     <td><%= flight.flightNo %></td>
-                    <td><%= flight.departs.toISOString().slice(0, 16) %></td>
+                    <td <%- +flight.departs < +today ? 'class="passed"' : '' %>><%= flight.departs.toISOString().slice(0, 16) %></td>
                 </tr>
             <% }) %>
         </tbody>

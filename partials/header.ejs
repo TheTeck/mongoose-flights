@@ -8,3 +8,9 @@
     <title><%= title %></title>
 </head>
 <body>
+    <nav>
+        <a href="/" id="home" <%- title === 'Home' ? 'class="active"' : '' %>>HOME</a>
+        <a href="/flights" <%- title === 'ALL Flights' ? 'class="active"' : '' %>>ALL FLIGHTS</a>
+        <a href="/flights/new" <%- title === 'Add Flight' ? 'class="active"' : '' %>>ADD FLIGHT</a>
+    </nav>
+    <main>

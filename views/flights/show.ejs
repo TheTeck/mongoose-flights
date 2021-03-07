@@ -26,11 +26,11 @@
   <!-- Airport Selection -->
   <label for="airport">Airport:</label>
   <select name="airport">
-    <option value="ATL">ATL</option>
-    <option value="DFW">DFW</option>
-    <option value="DEN">DEN</option>
-    <option value="LAX">LAX</option>
-    <option value="SAN">SAN</option>
+      <% airports.forEach(loc => { %>
+        <% if(!usedLocations.includes(loc)) { %>
+        <option value="<%= loc %>"><%= loc %></option>
+        <% } %>
+      <% }) %>
   </select>
   <!-- Departure Date and Time Selection -->
   <label for="arrival">Arrival Date and Time:</label>

@@ -38,6 +38,11 @@ function show (req, res) {
         flight.destinations.sort(function (a, b) {
             return +a.arrival - +b.arrival
         })
-        res.render('flights/show', {title: 'Flight Details', flight})
+        const airports = ['ATL', 'DFW', 'DEN', 'LAX', 'SAN']
+        let usedLocations = [flight.airport]
+        flight.destinations.forEach(dest => {
+            usedLocations.push(dest.airport)
+        })
+        res.render('flights/show', {title: 'Flight Details', flight, usedLocations, airports})
     })
 }

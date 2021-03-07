@@ -1,0 +1,10 @@
+<%- include('../../partials/header') %>
+
+<h1> <%= title %></h1>
+
+<p><%= flight.airport %></p>
+<p><%= flight.airline %></p>
+<p><%= flight.flightNo %></p>
+<p><%= flight.departs.toISOString().slice(0, 16) %></p>
+
+<%- include('../../partials/footer') %>

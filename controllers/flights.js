@@ -35,7 +35,9 @@ function create (req, res) {
 
 function show (req, res) {
     Flight.findById(req.params.id, function (err, flight) {
-        console.log(req.params.id)
+        flight.destinations.sort(function (a, b) {
+            return +a.arrival - +b.arrival
+        })
         res.render('flights/show', {title: 'Flight Details', flight})
     })
 }

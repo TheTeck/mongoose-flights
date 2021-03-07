@@ -2,9 +2,56 @@
 
 <h1> <%= title %></h1>
 
-<p><%= flight.airport %></p>
-<p><%= flight.airline %></p>
-<p><%= flight.flightNo %></p>
-<p><%= flight.departs.toISOString().slice(0, 16) %></p>
+<table>
+    <tr>
+        <td class="tbLabel">Airport:</td>
+        <td><%= flight.airport %></td>
+    </tr>
+    <tr>
+        <td class="tbLabel">Airline:</td>
+        <td><%= flight.airline %></td>
+    </tr>
+    <tr>
+        <td class="tbLabel">Flight Number:</td>
+        <td><%= flight.flightNo %></td>
+    </tr>
+    <tr>
+        <td class="tbLabel">Departure:</td>
+        <td><%= flight.departs.toISOString().slice(0, 16) %></td>
+    </tr>
+</table>
+
+<form id="add-destination-form" method="POST"
+  action="/flights/<%= flight._id %>/destinations">
+  <!-- Airport Selection -->
+  <label for="airport">Airport:</label>
+  <select name="airport">
+    <option value="ATL">ATL</option>
+    <option value="DFW">DFW</option>
+    <option value="DEN">DEN</option>
+    <option value="LAX">LAX</option>
+    <option value="SAN">SAN</option>
+  </select>
+  <!-- Departure Date and Time Selection -->
+  <label for="arrival">Arrival Date and Time:</label>
+  <input type="datetime-local" name="arrival" value=<%= flight.departs.toISOString().slice(0, 16) %>>
+  <input type="submit" value="Add Destination">
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th colspan="2">Destinations</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% flight.destinations.forEach(dest => { %>
+        <tr>
+            <td><%= dest.airport %></td>
+            <td><%= dest.arrival.toISOString().slice(0, 16) %></td>
+        </tr>
+        <% }) %>
+    </tbody>    
+</table>
 
 <%- include('../../partials/footer') %>

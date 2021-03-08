@@ -41,7 +41,7 @@
 <table>
     <thead>
         <tr>
-            <th colspan="2">Destinations</th>
+            <th colspan="3">Destinations</th>
         </tr>
     </thead>
     <tbody>
@@ -49,6 +49,12 @@
         <tr>
             <td><%= dest.airport %></td>
             <td><%= dest.arrival.toISOString().slice(0, 16) %></td>
+            <!-- Use an icon inside the submit button (which gets styled away) -->
+            <td><form action="/destinations/<%= dest._id %>?_method=DELETE" method="POST">
+                <button type="submit" class="iconButton">
+                    <i class="material-icons">delete</i></input>
+                </button>
+            </form></td>
         </tr>
         <% }) %>
     </tbody>    

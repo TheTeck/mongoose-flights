@@ -86,6 +86,13 @@ table {
   color: red;
 }
 
+.iconButton {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 #add-destination-form {
   margin: 1rem;
   padding: 1rem;

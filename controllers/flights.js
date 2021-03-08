@@ -1,5 +1,4 @@
 const Flight = require('../models/flight');
-const { render } = require('../server');
 
 module.exports = {
     index,

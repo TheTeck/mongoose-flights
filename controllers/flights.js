@@ -1,4 +1,5 @@
 const Flight = require('../models/flight');
+const Ticket = require('../models/ticket')
 
 module.exports = {
     index,
@@ -42,6 +43,12 @@ function show (req, res) {
         flight.destinations.forEach(dest => {
             usedLocations.push(dest.airport)
         })
-        res.render('flights/show', {title: 'Flight Details', flight, usedLocations, airports})
+        // Get the tickets for this flight
+        Ticket.find({}, function (err, allTickets) {
+            const tickets = allTickets.filter(ticket => {
+                return ticket.flight.includes(flight._id)
+            })
+            res.render('flights/show', {title: 'Flight Details', flight, usedLocations, airports, tickets})
+        })
     })
 }

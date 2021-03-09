@@ -12,7 +12,7 @@ function newTicket (req, res) {
 
 function create (req, res) {
     const ticket = new Ticket(req.body)
-    ticket.flight[0] = req.params.id
+    ticket.flight = req.params.id
 
     ticket.save(function(err) {
         res.redirect(`/flights/${req.params.id}`)
@@ -21,7 +21,7 @@ function create (req, res) {
 
 function deleteTicket (req, res) {
     Ticket.findById(req.params.id, function (err, ticket) {
-        const flight = ticket.flight[0]
+        const flight = ticket.flight
         Ticket.findByIdAndDelete(req.params.id, function (err) {
             res.redirect(`/flights/${flight._id}`)
         })

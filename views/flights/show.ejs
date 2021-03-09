@@ -56,9 +56,7 @@
         <label for="airport">Airport:</label>
         <select name="airport">
             <% airports.forEach(loc => { %>
-                <% if(!usedLocations.includes(loc)) { %>
                 <option value="<%= loc %>"><%= loc %></option>
-                <% } %>
             <% }) %>
         </select>
         <!-- Departure Date and Time Selection -->

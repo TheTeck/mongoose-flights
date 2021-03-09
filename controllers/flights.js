@@ -38,17 +38,18 @@ function show (req, res) {
         flight.destinations.sort(function (a, b) {
             return +a.arrival - +b.arrival
         })
-        const airports = ['ATL', 'DFW', 'DEN', 'LAX', 'SAN']
+        const theAirports = ['ATL', 'DFW', 'DEN', 'LAX', 'SAN']
         let usedLocations = [flight.airport]
         flight.destinations.forEach(dest => {
             usedLocations.push(dest.airport)
         })
-        // Get the tickets for this flight
-        Ticket.find({}, function (err, allTickets) {
-            const tickets = allTickets.filter(ticket => {
-                return ticket.flight.includes(flight._id)
-            })
-            res.render('flights/show', {title: 'Flight Details', flight, usedLocations, airports, tickets})
+        const airports = theAirports.filter(function(airport) {
+            return !usedLocations.includes(airport)
+        })
+
+        Ticket.find({flight: flight._id}, function (err, tickets) {
+            console.log(tickets)
+            res.render('flights/show', {title: 'Flight Details', flight, airports, tickets})
         })
     })
 }

@@ -2,90 +2,93 @@
 
 <h1> <%= title %></h1>
 
-<table>
-    <tr>
-        <td class="tbLabel">Airport:</td>
-        <td><%= flight.airport %></td>
-    </tr>
-    <tr>
-        <td class="tbLabel">Airline:</td>
-        <td><%= flight.airline %></td>
-    </tr>
-    <tr>
-        <td class="tbLabel">Flight Number:</td>
-        <td><%= flight.flightNo %></td>
-    </tr>
-    <tr>
-        <td class="tbLabel">Departure:</td>
-        <td><%= flight.departs.toISOString().slice(0, 16) %></td>
-    </tr>
-</table>
+<div id="content">
+    <div id="left-flight-container">
+        <table>
+            <tr>
+                <td class="tbLabel">Airport:</td>
+                <td><%= flight.airport %></td>
+            </tr>
+            <tr>
+                <td class="tbLabel">Airline:</td>
+                <td><%= flight.airline %></td>
+            </tr>
+            <tr>
+                <td class="tbLabel">Flight Number:</td>
+                <td><%= flight.flightNo %></td>
+            </tr>
+            <tr>
+                <td class="tbLabel">Departure:</td>
+                <td><%= flight.departs.toISOString().slice(0, 16) %></td>
+            </tr>
+        </table>
 
-<form id="add-destination-form" method="POST"
-  action="/flights/<%= flight._id %>/destinations">
-  <!-- Airport Selection -->
-  <label for="airport">Airport:</label>
-  <select name="airport">
-      <% airports.forEach(loc => { %>
-        <% if(!usedLocations.includes(loc)) { %>
-        <option value="<%= loc %>"><%= loc %></option>
-        <% } %>
-      <% }) %>
-  </select>
-  <!-- Departure Date and Time Selection -->
-  <label for="arrival">Arrival Date and Time:</label>
-  <input type="datetime-local" name="arrival" value=<%= flight.departs.toISOString().slice(0, 16) %>>
-  <input type="submit" value="Add Destination">
-</form>
+        <a href="/flights/<%= flight._id %>/tickets/new">New Ticket</a>
 
-<table>
-    <thead>
-        <tr>
-            <th colspan="3">Destinations</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% flight.destinations.forEach(dest => { %>
-        <tr>
-            <td><%= dest.airport %></td>
-            <td><%= dest.arrival.toISOString().slice(0, 16) %></td>
-            <!-- Use an icon inside the submit button (which gets styled away) -->
-            <td><form action="/destinations/<%= dest._id %>?_method=DELETE" method="POST">
-                <button type="submit" class="iconButton">
-                    <i class="material-icons">delete</i></input>
-                </button>
-            </form></td>
-        </tr>
-        <% }) %>
-    </tbody>    
-</table>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="3">Tickets</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% tickets.forEach(ticket => { %>
+                <tr>
+                    <td><%= ticket.seat %></td>
+                    <td>$<%= ticket.price %></td>
+                    <!-- Use an icon inside the submit button (which gets styled away) -->
+                    <!-- Still need to hook up delete buttons !!!!!!!!!! -->
+                    <td><form action="/tickets/<%= ticket._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="iconButton">
+                            <i class="material-icons">delete</i></input>
+                        </button>
+                    </form></td>
+                </tr>
+                <% }) %>
+            </tbody>    
+        </table>
+    </div>
 
-<% if (tickets) { %>
-<table>
-    <thead>
-        <tr>
-            <th colspan="3">Tickets</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% tickets.forEach(ticket => { %>
-        <tr>
-            <td><%= ticket.seat %></td>
-            <td>$<%= ticket.price %></td>
-            <!-- Use an icon inside the submit button (which gets styled away) -->
-            <!-- Still need to hook up delete buttons !!!!!!!!!! -->
-            <td><form action="/tickets/<%= ticket._id %>?_method=DELETE" method="POST">
-                <button type="submit" class="iconButton">
-                    <i class="material-icons">delete</i></input>
-                </button>
-            </form></td>
-        </tr>
-        <% }) %>
-    </tbody>    
-</table>
-<% } else { %>
-    <h3>There are no tickets sold for this flight yet.</h3>
-<% } %>
-<a href="/flights/<%= flight._id %>/tickets/new">New Ticket</a>
+    <div id="right-flight-container">
+        <form id="add-destination-form" method="POST"
+        action="/flights/<%= flight._id %>/destinations">
+        <!-- Airport Selection -->
+        <label for="airport">Airport:</label>
+        <select name="airport">
+            <% airports.forEach(loc => { %>
+                <% if(!usedLocations.includes(loc)) { %>
+                <option value="<%= loc %>"><%= loc %></option>
+                <% } %>
+            <% }) %>
+        </select>
+        <!-- Departure Date and Time Selection -->
+        <label for="arrival">Arrival Date and Time:</label>
+        <input type="datetime-local" name="arrival" value=<%= flight.departs.toISOString().slice(0, 16) %>>
+        <input type="submit" value="Add Destination">
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="3">Destinations</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% flight.destinations.forEach(dest => { %>
+                <tr>
+                    <td><%= dest.airport %></td>
+                    <td><%= dest.arrival.toISOString().slice(0, 16) %></td>
+                    <!-- Use an icon inside the submit button (which gets styled away) -->
+                    <td><form action="/destinations/<%= dest._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="iconButton">
+                            <i class="material-icons">delete</i></input>
+                        </button>
+                    </form></td>
+                </tr>
+                <% }) %>
+            </tbody>    
+        </table>
+    </div>
+</div>
 
 <%- include('../../partials/footer') %>

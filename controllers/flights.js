@@ -8,14 +8,17 @@ module.exports = {
     show
 }
 
-function index (req, res) {
-    Flight.find({}, function (err, flights) {
+async function index (req, res) {
+    try {
+        const flights = await Flight.find({})
         flights.sort(function (a, b) {
             return +a.departs - +b.departs
         })
         let today = new Date()
         res.render('flights/index', {flights, title: 'All Flights', today})
-    })
+    } catch (err) {
+        res.send(err)
+    }
 }
 
 function newFlight (req, res) {
@@ -25,31 +28,46 @@ function newFlight (req, res) {
     res.render('flights/new', {title: 'Add Flight', departsDate})
 }
 
-function create (req, res) {
-    const flight = new Flight(req.body)
-    flight.save(function(err) {
-        if (err) return res.redirect('/flights/new')
+async function create (req, res) {
+    try {
+        const flight = new Flight(req.body)
+        await flight.save()
         res.redirect('/flights')
-    })
+    } catch (err) {
+        res.redirect('/flights/new')
+    }
 }
 
-function show (req, res) {
-    Flight.findById(req.params.id, function (err, flight) {
-        flight.destinations.sort(function (a, b) {
-            return +a.arrival - +b.arrival
-        })
+async function show (req, res) {
+    try {
+        const flight = await Flight.findById(req.params.id)
+        flight.destinations.sort((a, b) => +a.arrival - +b.arrival)
         const theAirports = ['ATL', 'DFW', 'DEN', 'LAX', 'SAN']
         let usedLocations = [flight.airport]
-        flight.destinations.forEach(dest => {
-            usedLocations.push(dest.airport)
-        })
-        const airports = theAirports.filter(function(airport) {
-            return !usedLocations.includes(airport)
-        })
+        flight.destinations.forEach(dest => usedLocations.push(dest.airport))
+        const airports = theAirports.filter(airport => !usedLocations.includes(airport))
+        const tickets = await Ticket.find({flight: flight._id})
+        res.render('flights/show', {title: 'Flight Details', flight, airports, tickets})
+    } catch (err) {
+        res.send(err)
+    }
 
-        Ticket.find({flight: flight._id}, function (err, tickets) {
-            console.log(tickets)
-            res.render('flights/show', {title: 'Flight Details', flight, airports, tickets})
-        })
-    })
+    // Flight.findById(req.params.id, function (err, flight) {
+    //     flight.destinations.sort(function (a, b) {
+    //         return +a.arrival - +b.arrival
+    //     })
+    //     const theAirports = ['ATL', 'DFW', 'DEN', 'LAX', 'SAN']
+    //     let usedLocations = [flight.airport]
+    //     flight.destinations.forEach(dest => {
+    //         usedLocations.push(dest.airport)
+    //     })
+    //     const airports = theAirports.filter(function(airport) {
+    //         return !usedLocations.includes(airport)
+    //     })
+
+    //     Ticket.find({flight: flight._id}, function (err, tickets) {
+    //         console.log(tickets)
+    //         res.render('flights/show', {title: 'Flight Details', flight, airports, tickets})
+    //     })
+    // })
 }

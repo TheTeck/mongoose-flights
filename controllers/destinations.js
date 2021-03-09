@@ -5,20 +5,24 @@ module.exports = {
     delete: deleteDestination
 }
 
-function create (req, res) {
-    Flight.findById(req.params.id, function (err, flight) {
+async function create (req, res) {
+    try {
+        const flight = await Flight.findById(req.params.id)
         flight.destinations.push(req.body)
-        flight.save(function (err) {
-            res.redirect(`/flights/${flight._id}`)
-        })
-    })
+        await flight.save()
+        res.redirect(`/flights/${flight._id}`)
+    } catch (err) {
+        res.send(err)
+    }
 }
 
-function deleteDestination (req, res) {
-    Flight.findOne({'destinations._id': req.params.id}, function (err, result) {
-        result.destinations.id(req.params.id).remove()
-        result.save(function (err) {
-            res.redirect(`/flights/${result._id}`)
-        })
-    })
+async function deleteDestination (req, res) {
+    try {
+        const result = await Flight.findOne({'destinations._id': req.params.id})
+        await result.destinations.id(req.params.id).remove()
+        await result.save()
+        res.redirect(`/flights/${result._id}`)
+    } catch (err) {
+        res.send(err)
+    }
 }

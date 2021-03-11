@@ -47,27 +47,9 @@ async function show (req, res) {
         flight.destinations.forEach(dest => usedLocations.push(dest.airport))
         const airports = theAirports.filter(airport => !usedLocations.includes(airport))
         const tickets = await Ticket.find({flight: flight._id})
-        res.render('flights/show', {title: 'Flight Details', flight, airports, tickets})
+        const dateTime = flight.departs.toISOString().slice(0, 16).split('T')
+        res.render('flights/show', {title: 'Flight Details', flight, dateTime, airports, tickets})
     } catch (err) {
         res.send(err)
     }
-
-    // Flight.findById(req.params.id, function (err, flight) {
-    //     flight.destinations.sort(function (a, b) {
-    //         return +a.arrival - +b.arrival
-    //     })
-    //     const theAirports = ['ATL', 'DFW', 'DEN', 'LAX', 'SAN']
-    //     let usedLocations = [flight.airport]
-    //     flight.destinations.forEach(dest => {
-    //         usedLocations.push(dest.airport)
-    //     })
-    //     const airports = theAirports.filter(function(airport) {
-    //         return !usedLocations.includes(airport)
-    //     })
-
-    //     Ticket.find({flight: flight._id}, function (err, tickets) {
-    //         console.log(tickets)
-    //         res.render('flights/show', {title: 'Flight Details', flight, airports, tickets})
-    //     })
-    // })
 }

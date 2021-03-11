@@ -1,6 +1,6 @@
 <%- include('../../partials/header') %>
 
-<h1> <%= title %></h1>
+<h1>Flight <%= flight.flightNo %></h1>
 
 <div id="content">
     <div id="left-flight-container">
@@ -19,7 +19,10 @@
             </tr>
             <tr>
                 <td class="tbLabel">Departure:</td>
-                <td><%= flight.departs.toISOString().slice(0, 16) %></td>
+                <td>
+                    <p><%= dateTime[0] %></p>
+                    <p><%= dateTime[1] %></p>
+                </td>
             </tr>
         </table>
 
@@ -32,12 +35,13 @@
                 </tr>
             </thead>
             <tbody>
+                <% if (tickets.length === 0) { %>
+                    <tr><td>No seats sold yet</td></tr>
+                <% } %>
                 <% tickets.forEach(ticket => { %>
                 <tr>
                     <td><%= ticket.seat %></td>
                     <td>$<%= ticket.price %></td>
-                    <!-- Use an icon inside the submit button (which gets styled away) -->
-                    <!-- Still need to hook up delete buttons !!!!!!!!!! -->
                     <td><form action="/tickets/<%= ticket._id %>?_method=DELETE" method="POST">
                         <button type="submit" class="iconButton">
                             <i class="material-icons">delete</i></input>
@@ -50,7 +54,7 @@
     </div>
 
     <div id="right-flight-container">
-        <form id="add-destination-form" method="POST"
+        <form class="add-form" method="POST"
         action="/flights/<%= flight._id %>/destinations">
         <!-- Airport Selection -->
         <label for="airport">Airport:</label>
@@ -72,10 +76,13 @@
                 </tr>
             </thead>
             <tbody>
+                <% if (flight.destinations.length === 0) { %>
+                    <tr><td>No destinations yet</td></tr>
+                <% } %>
                 <% flight.destinations.forEach(dest => { %>
                 <tr>
                     <td><%= dest.airport %></td>
-                    <td><%= dest.arrival.toISOString().slice(0, 16) %></td>
+                    <td><%= dest.arrival.toISOString() %></td>
                     <!-- Use an icon inside the submit button (which gets styled away) -->
                     <td><form action="/destinations/<%= dest._id %>?_method=DELETE" method="POST">
                         <button type="submit" class="iconButton">
